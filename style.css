@@ -1,0 +1,380 @@
+/* ========================================
+   360° Panorama Viewer — Styles
+   ======================================== */
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
+    background: #0a0a0f;
+    color: #fff;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* ── Pannellum Viewer ── */
+#panorama {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Hide default Pannellum controls for cleaner look */
+.pnlm-controls-container {
+    display: none !important;
+}
+
+/* ── Custom Hotspot ── */
+.custom-hotspot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.9) 0%, rgba(139, 92, 246, 0.6) 60%, transparent 100%);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.2);
+}
+
+.custom-hotspot:hover {
+    transform: scale(1.3);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.8), 0 0 80px rgba(139, 92, 246, 0.4);
+}
+
+.custom-hotspot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Pulse animation ring */
+.custom-hotspot::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border-radius: 50%;
+    border: 2px solid rgba(167, 139, 250, 0.5);
+    animation: hotspotPulse 2s ease-in-out infinite;
+}
+
+@keyframes hotspotPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* ── Overlay Header ── */
+.overlay-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: 24px 32px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+    pointer-events: none;
+    animation: fadeInDown 1s ease-out 0.5s both;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.header-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(139, 92, 246, 0.5);
+}
+
+.overlay-header h1 {
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.header-sub {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: -8px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Info Panel (Glassmorphism) ── */
+.info-panel {
+    position: fixed;
+    top: 50%;
+    right: 32px;
+    transform: translateY(-50%) translateX(120%);
+    z-index: 20;
+    width: 340px;
+    max-width: calc(100vw - 64px);
+    padding: 32px 28px 24px;
+    border-radius: 20px;
+    background: rgba(15, 15, 30, 0.65);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+        0 0 80px rgba(139, 92, 246, 0.08);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.info-panel.active {
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+    pointer-events: all;
+}
+
+.info-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.info-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.info-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    animation: iconBounce 0.6s ease-out;
+}
+
+@keyframes iconBounce {
+    0% {
+        transform: scale(0);
+    }
+
+    60% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.info-panel h2 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.info-panel p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 400;
+}
+
+.info-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.4), transparent);
+    margin: 20px 0 14px;
+}
+
+.info-hint {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 400;
+}
+
+/* ── Bottom Navigation Dots ── */
+.nav-dots {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    display: flex;
+    gap: 12px;
+    padding: 10px 20px;
+    background: rgba(15, 15, 30, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeInUp 1s ease-out 0.8s both;
+}
+
+.nav-dot {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.nav-dot::before {
+    content: attr(data-index);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    /* Show numeric index +1 */
+}
+
+.nav-dot:hover,
+.nav-dot.active {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    border-color: rgba(167, 139, 250, 0.8);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    transform: scale(1.1);
+}
+
+.dot-label {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    background: rgba(15, 15, 30, 0.8);
+    backdrop-filter: blur(8px);
+    padding: 5px 12px;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-dot:hover .dot-label {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ── Animations ── */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .info-panel {
+        right: 16px;
+        left: 16px;
+        width: auto;
+        top: auto;
+        bottom: 100px;
+        transform: translateY(120%);
+    }
+
+    .info-panel.active {
+        transform: translateY(0);
+    }
+
+    .overlay-header {
+        padding: 16px 20px;
+    }
+
+    .nav-dots {
+        bottom: 16px;
+        gap: 8px;
+        padding: 8px 14px;
+    }
+
+    .nav-dot {
+        width: 36px;
+        height: 36px;
+    }
+}

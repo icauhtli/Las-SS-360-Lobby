@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciudad Futurista 360° — Explora el Futuro</title>
+    <meta name="description"
+        content="Explora una ciudad futurista en 360 grados con hotspots interactivos. Experiencia inmersiva panorámica.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Pannellum CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- 360 Viewer Container -->
+    <div id="panorama"></div>
+
+    <!-- Overlay UI: Title -->
+    <header id="site-header" class="overlay-header">
+        <div class="header-content">
+            <span class="header-badge">360°</span>
+            <h1>Ciudad Futurista</h1>
+            <p class="header-sub">Arrastra para explorar · Haz clic en los puntos brillantes</p>
+        </div>
+    </header>
+
+    <!-- Info Panel (appears on hotspot click) -->
+    <div id="info-panel" class="info-panel">
+        <button id="info-close" class="info-close" aria-label="Cerrar panel">&times;</button>
+        <div class="info-icon" id="info-icon">🏙️</div>
+        <h2 id="info-title">Título</h2>
+        <p id="info-description">Descripción del hotspot.</p>
+        <div class="info-divider"></div>
+        <span class="info-hint">Haz clic en otro punto para explorar más</span>
+    </div>
+
+    <!-- Navigation Dots -->
+    <nav id="nav-dots" class="nav-dots">
+        <button class="nav-dot" data-index="0" aria-label="Ir al hotspot 1">
+            <span class="dot-label">Sky Gardens</span>
+        </button>
+        <button class="nav-dot" data-index="1" aria-label="Ir al hotspot 2">
+            <span class="dot-label">Neon District</span>
+        </button>
+        <button class="nav-dot" data-index="2" aria-label="Ir al hotspot 3">
+            <span class="dot-label">Glass Tower</span>
+        </button>
+        <button class="nav-dot" data-index="3" aria-label="Ir al hotspot 4">
+            <span class="dot-label">Sky Transit</span>
+        </button>
+        <button class="nav-dot" data-index="4" aria-label="Ir al hotspot 5">
+            <span class="dot-label">Energy Core</span>
+        </button>
+        <button class="nav-dot" data-index="5" aria-label="Ir al hotspot 6">
+            <span class="dot-label">Holo Plaza</span>
+        </button>
+        <button class="nav-dot" data-index="6" aria-label="Ir al hotspot 7">
+            <span class="dot-label">Aqua Level</span>
+        </button>
+    </nav>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
