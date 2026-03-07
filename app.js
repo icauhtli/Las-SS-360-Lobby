@@ -6,52 +6,59 @@
 const hotspots = [
     {
         pitch: 10,
-        yaw: -30,
-        icon: '🌿',
-        title: 'Sky Gardens',
-        description: 'Jardines verticales que cubren los rascacielos, purificando el aire de la ciudad y creando ecosistemas urbanos autosuficientes con más de 200 especies de plantas.'
+        yaw: -20,
+        icon: '📜',
+        title: 'LAS SS',
+        description: 'Bienvenido a Sesiones Sonar. Grabado en vivo y en directo desde las entrañas de XNR Central. Sonido crudo, sin cortes.',
+        type: 'info'
     },
     {
         pitch: -5,
-        yaw: 80,
-        icon: '💜',
-        title: 'Neon District',
-        description: 'El corazón cultural de la ciudad, donde el arte holográfico y las luces neón crean una atmósfera vibrante las 24 horas. Hogar de galerías inmersivas y mercados nocturnos.'
+        yaw: 30,
+        icon: '💼',
+        title: 'Presskit Patrocinadores',
+        URL: 'assets/ui/presskit-marcas.pdf',
+        type: 'link'
     },
     {
-        pitch: 25,
-        yaw: 160,
-        icon: '🏛️',
-        title: 'Glass Tower',
-        description: 'La torre central de cristal inteligente que genera energía solar y actúa como hub de comunicaciones para toda la metrópolis. Su fachada cambia de color según la hora del día.'
+        pitch: 0,
+        yaw: 80,
+        icon: '🎸',
+        title: 'Toca en Las SS (Convocatoria)',
+        URL: 'https://ideascomobalas.com/contacto',
+        type: 'link'
+    },
+    {
+        pitch: -15,
+        yaw: -70,
+        icon: '📰',
+        title: 'Notas de las Sesiones',
+        URL: 'https://ideascomobalas.com/blog',
+        type: 'link'
+    },
+    {
+        pitch: 5,
+        yaw: 130,
+        icon: '📼',
+        title: 'Catálogo Completo',
+        URL: '/catalogo/index.html',
+        type: 'link'
     },
     {
         pitch: 20,
-        yaw: -120,
-        icon: '🚀',
-        title: 'Sky Transit',
-        description: 'Sistema de transporte aéreo autónomo que conecta todos los distritos. Vehículos eléctricos silenciosos recorren rutas predefinidas a velocidades de hasta 200 km/h.'
+        yaw: -140,
+        icon: '📺',
+        title: 'Canal Oficial (Abrir en App)',
+        URL: 'https://yt.ideascomobalas.com/canal',
+        type: 'link'
     },
     {
-        pitch: -10,
-        yaw: -170,
-        icon: '⚡',
-        title: 'Energy Core',
-        description: 'La planta de fusión compacta que alimenta toda la ciudad. Energía limpia e inagotable distribuida a través de una red subterránea de superconductores.'
-    },
-    {
-        pitch: 15,
-        yaw: 30,
-        icon: '🎭',
-        title: 'Holo Plaza',
-        description: 'La plaza central de entretenimiento con proyecciones holográficas a escala monumental. Conciertos, teatro y arte digital se fusionan en experiencias multisensoriales.'
-    },
-    {
-        pitch: -8,
-        yaw: -80,
-        icon: '🌊',
-        title: 'Aqua Level',
-        description: 'Sistema de purificación y reciclaje de agua integrado en la infraestructura urbana. Cascadas artificiales que filtran y redistribuyen agua potable a toda la ciudad.'
+        pitch: -20,
+        yaw: 180,
+        icon: '📱',
+        title: 'Instagram',
+        URL: 'https://instagram.com/ideascomobalas',
+        type: 'link'
     }
 ];
 
@@ -64,14 +71,18 @@ const infoClose = document.getElementById('info-close');
 const navDots = document.querySelectorAll('.nav-dot');
 
 // ── Create custom hotspot element ──
-function createHotspotElement(hotspotDiv) {
+function createHotspotElement(hotspotDiv, args) {
     hotspotDiv.classList.add('custom-hotspot');
+    // We expect the icon to be passed in args
+    if (args && args.icon) {
+        hotspotDiv.textContent = args.icon;
+    }
 }
 
 // ── Initialize Pannellum ──
 const viewer = pannellum.viewer('panorama', {
     type: 'equirectangular',
-    panorama: 'assets/panorama.png',
+    panorama: 'assets/360/lobby-xnr.jpg',
     autoLoad: true,
     autoRotate: -1.5,
     autoRotateInactivityDelay: 4000,
@@ -84,13 +95,26 @@ const viewer = pannellum.viewer('panorama', {
     maxHfov: 120,
     pitch: 5,
     yaw: 0,
-    hotSpots: hotspots.map((hs, i) => ({
-        pitch: hs.pitch,
-        yaw: hs.yaw,
-        type: 'custom',
-        createTooltipFunc: createHotspotElement,
-        clickHandlerFunc: () => showInfo(i)
-    }))
+    hotSpots: hotspots.map((hs, i) => {
+        let spotConfig = {
+            pitch: hs.pitch,
+            yaw: hs.yaw,
+            type: 'custom',
+            createTooltipFunc: createHotspotElement,
+            createTooltipArgs: { icon: hs.icon },
+        };
+
+        if (hs.type === 'link') {
+            spotConfig.URL = hs.URL;
+            spotConfig.clickHandlerFunc = () => {
+                window.location.href = hs.URL;
+            };
+        } else {
+            spotConfig.clickHandlerFunc = () => showInfo(i);
+        }
+
+        return spotConfig;
+    })
 });
 
 // ── Show Info Panel ──
@@ -137,8 +161,14 @@ navDots.forEach((dot, index) => {
         // Animate camera to hotspot
         viewer.lookAt(hs.pitch, hs.yaw, undefined, 1500);
 
-        // Show info after camera moves
-        setTimeout(() => showInfo(index), 800);
+        // Action after camera moves
+        setTimeout(() => {
+            if (hs.type === 'link') {
+                window.location.href = hs.URL;
+            } else {
+                showInfo(index);
+            }
+        }, 800);
     });
 });
 
