@@ -5,57 +5,57 @@
 // ── Hotspot Data ──
 const hotspots = [
     {
-        pitch: 10,
-        yaw: -20,
-        icon: '📜',
+        pitch: 0,
+        yaw: -30,
+        iconUrl: 'assets/ui/icon-manifiesto.png',
         title: 'LAS SS',
         description: 'Bienvenido a Sesiones Sonar. Grabado en vivo y en directo desde las entrañas de XNR Central. Sonido crudo, sin cortes.',
         type: 'info'
     },
     {
-        pitch: -5,
-        yaw: 30,
-        icon: '💼',
+        pitch: 0,
+        yaw: -20,
+        iconUrl: 'assets/ui/icon-presskit.png',
         title: 'Presskit Patrocinadores',
         URL: 'assets/ui/presskit-marcas.pdf',
         type: 'link'
     },
     {
         pitch: 0,
-        yaw: 80,
-        icon: '🎸',
+        yaw: -10,
+        iconUrl: 'assets/ui/icon-convocatoria.png',
         title: 'Toca en Las SS (Convocatoria)',
         URL: 'https://ideascomobalas.com/contacto',
         type: 'link'
     },
     {
-        pitch: -15,
-        yaw: -70,
-        icon: '📰',
+        pitch: 0,
+        yaw: 0,
+        iconUrl: 'assets/ui/icon-notas.png',
         title: 'Notas de las Sesiones',
         URL: 'https://ideascomobalas.com/blog',
         type: 'link'
     },
     {
-        pitch: 5,
-        yaw: 130,
-        icon: '📼',
+        pitch: 0,
+        yaw: 10,
+        iconUrl: 'assets/ui/icon-catalogo.png',
         title: 'Catálogo Completo',
         URL: '/catalogo/index.html',
         type: 'link'
     },
     {
-        pitch: 20,
-        yaw: -140,
-        icon: '📺',
+        pitch: 0,
+        yaw: 20,
+        iconUrl: 'assets/ui/icon-yt.png',
         title: 'Canal Oficial (Abrir en App)',
         URL: 'https://yt.ideascomobalas.com/canal',
         type: 'link'
     },
     {
-        pitch: -20,
-        yaw: 180,
-        icon: '📱',
+        pitch: 0,
+        yaw: 30,
+        iconUrl: 'assets/ui/icon-ig.png',
         title: 'Instagram',
         URL: 'https://instagram.com/ideascomobalas',
         type: 'link'
@@ -68,14 +68,24 @@ const infoTitle = document.getElementById('info-title');
 const infoDesc = document.getElementById('info-description');
 const infoIcon = document.getElementById('info-icon');
 const infoClose = document.getElementById('info-close');
-const navDots = document.querySelectorAll('.nav-dot');
+const navMenu = document.getElementById('nav-menu');
+const menuToggle = document.getElementById('menu-toggle');
+const navItems = document.querySelectorAll('.nav-item');
 
 // ── Create custom hotspot element ──
 function createHotspotElement(hotspotDiv, args) {
     hotspotDiv.classList.add('custom-hotspot');
-    // We expect the icon to be passed in args
-    if (args && args.icon) {
-        hotspotDiv.textContent = args.icon;
+    // We expect the iconUrl to be passed in args
+    if (args && args.iconUrl) {
+        let img = document.createElement('img');
+        img.src = args.iconUrl;
+        img.alt = '';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'contain';
+        // Add a fallback pixel-art text just in case images are missing
+        img.onerror = () => { img.style.display = 'none'; hotspotDiv.textContent = '?'; };
+        hotspotDiv.appendChild(img);
     }
 }
 
@@ -101,7 +111,7 @@ const viewer = pannellum.viewer('panorama', {
             yaw: hs.yaw,
             type: 'custom',
             createTooltipFunc: createHotspotElement,
-            createTooltipArgs: { icon: hs.icon },
+            createTooltipArgs: { iconUrl: hs.iconUrl },
         };
 
         if (hs.type === 'link') {
@@ -135,29 +145,36 @@ function showInfo(index) {
     // Stop auto-rotate when interacting
     viewer.setAutoRotate(0);
 
-    // Highlight active dot
-    navDots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === index);
+    // Highlight active nav item
+    navItems.forEach((item, i) => {
+        item.classList.toggle('active', i === index);
     });
 }
 
 // ── Close Info Panel ──
 function closeInfo() {
     infoPanel.classList.remove('active');
-    navDots.forEach(dot => dot.classList.remove('active'));
+    navItems.forEach(item => item.classList.remove('active'));
     // Resume auto-rotate after closing
     setTimeout(() => viewer.setAutoRotate(-1.5), 2000);
 }
 
 infoClose.addEventListener('click', closeInfo);
 
-// ── Navigation Dots ──
-navDots.forEach((dot, index) => {
-    // Set display number (1-indexed)
-    dot.querySelector('::before') || null;
+// ── Hamburger Menu Toggle ──
+menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
+    navMenu.classList.toggle('active');
+});
 
-    dot.addEventListener('click', () => {
+// ── Navigation Items ──
+navItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
         const hs = hotspots[index];
+        // Close menu on selection (optional but recommended for UX)
+        menuToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+
         // Animate camera to hotspot
         viewer.lookAt(hs.pitch, hs.yaw, undefined, 1500);
 

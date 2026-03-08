@@ -10,7 +10,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
     <!-- Pannellum CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
@@ -28,7 +28,9 @@
     <!-- Overlay UI: Title -->
     <header id="site-header" class="overlay-header">
         <div class="header-content">
-            <span class="header-badge">IDEAS COMO BALAS</span>
+            <span class="header-badge">
+                <img src="assets/ui/logo-oficial.png" alt="IDEAS COMO BALAS" style="max-height: 24px;">
+            </span>
             <h1>LAS SS: SESIONES SONAR</h1>
             <p class="header-sub">Arrastra para explorar · Selecciona un punto para acceder</p>
         </div>
@@ -44,29 +46,22 @@
         <span class="info-hint">Haz clic en otro punto para explorar más</span>
     </div>
 
-    <!-- Navigation Dots -->
-    <nav id="nav-dots" class="nav-dots">
-        <button class="nav-dot" data-index="0">
-            <span class="dot-label">Manifiesto</span>
-        </button>
-        <button class="nav-dot" data-index="1">
-            <span class="dot-label">Presskit (Patrocinio)</span>
-        </button>
-        <button class="nav-dot" data-index="2">
-            <span class="dot-label">Convocatoria ($)</span>
-        </button>
-        <button class="nav-dot" data-index="3">
-            <span class="dot-label">Notas Editoriales</span>
-        </button>
-        <button class="nav-dot" data-index="4">
-            <span class="dot-label">El Catálogo</span>
-        </button>
-        <button class="nav-dot" data-index="5">
-            <span class="dot-label">App YouTube</span>
-        </button>
-        <button class="nav-dot" data-index="6">
-            <span class="dot-label">Redes</span>
-        </button>
+    <!-- Hamburger Menu -->
+    <div id="menu-toggle" class="menu-toggle" aria-label="Abrir Menú">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Navigation Menu overlay -->
+    <nav id="nav-menu" class="nav-menu">
+        <button class="nav-item" data-index="0">Manifiesto</button>
+        <button class="nav-item" data-index="1">Presskit (Patrocinio)</button>
+        <button class="nav-item" data-index="2">Convocatoria ($)</button>
+        <button class="nav-item" data-index="3">Notas Editoriales</button>
+        <button class="nav-item" data-index="4">El Catálogo</button>
+        <button class="nav-item" data-index="5">App YouTube</button>
+        <button class="nav-item" data-index="6">Redes</button>
     </nav>
 
     <script src="app.js"></script>
